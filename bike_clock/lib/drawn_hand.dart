@@ -8,15 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'hand.dart';
 
-/// A clock hand that is drawn with [CustomPainter]
-///
-/// The hand's length scales based on the clock's size.
-/// This hand is used to build the second and minute hands, and demonstrates
-/// building a custom hand.
 class DrawnHand extends Hand {
-  /// Create a const clock [Hand].
-  ///
-  /// All of the parameters are required and must not be null.
   const DrawnHand({
     @required Color color,
     @required this.thickness,
