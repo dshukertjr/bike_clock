@@ -81,7 +81,7 @@ class _HandPainter extends CustomPainter {
     final linePaint = Paint()
       ..color = color
       ..strokeWidth = lineWidth
-      ..strokeCap = StrokeCap.square;
+      ..strokeCap = StrokeCap.round;
 
     canvas.drawLine(center, position, linePaint);
   }
