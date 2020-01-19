@@ -13,9 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:intl/intl.dart';
 
-/// A basic analog clock.
-///
-/// You can do better than this!
 class BikeClock extends StatefulWidget {
   const BikeClock(this.model);
 
@@ -34,7 +31,6 @@ class _BikeClockState extends State<BikeClock> {
   void initState() {
     super.initState();
     widget.model.addListener(_updateModel);
-    // Set the initial values.
     _updateTime();
     _updateModel();
   }
@@ -57,15 +53,14 @@ class _BikeClockState extends State<BikeClock> {
 
   void _updateModel() {
     setState(() {
-      // _weatherCondition = widget.model.weatherCondition;
+      _weatherCondition = widget.model.weatherCondition;
     });
   }
 
   void _updateTime() {
     setState(() {
       _now = DateTime.now();
-      // Update once per second. Make sure to do it at the beginning of each
-      // new second, so that the clock is accurate.
+
       _timer = Timer(
         Duration(seconds: 1) - Duration(milliseconds: _now.millisecond),
         _updateTime,
@@ -75,13 +70,6 @@ class _BikeClockState extends State<BikeClock> {
 
   @override
   Widget build(BuildContext context) {
-    // There are many ways to apply themes to your clock. Some are:
-    //  - Inherit the parent Theme (see ClockCustomizer in the
-    //    flutter_clock_helper package).
-    //  - Override the Theme.of(context).colorScheme.
-    //  - Create your own [ThemeData], demonstrated in [BikeClock].
-    //  - Create a map of [Color]s to custom keys, demonstrated in
-    //    [DigitalClock].
     final customTheme = Theme.of(context).copyWith(
       // Hour hand.
       primaryColor: Color(0xFFFFFFFF),
@@ -121,7 +109,10 @@ class _BikeClockState extends State<BikeClock> {
       child: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Sky(weatherCondition: _weatherCondition),
+          Sky(
+            weatherCondition: _weatherCondition,
+            timeShadow: timeShade,
+          ),
           Image.asset(
             'assets/background.png',
             fit: BoxFit.cover,
@@ -129,6 +120,9 @@ class _BikeClockState extends State<BikeClock> {
           FlareActor(
             'assets/bike.flr',
             animation: 'rotateTire',
+          ),
+          Container(
+            color: Colors.black.withOpacity(timeShade),
           ),
           FractionallySizedBox(
             alignment: Alignment(-.66, .573),
@@ -138,9 +132,6 @@ class _BikeClockState extends State<BikeClock> {
               customTheme: customTheme,
               now: _now,
             ),
-          ),
-          Container(
-            color: Colors.black.withOpacity(timeShade),
           ),
           if (_weatherCondition == WeatherCondition.snowy)
             FlareActor(
@@ -156,6 +147,15 @@ class _BikeClockState extends State<BikeClock> {
             FlareActor(
               'assets/rain.flr',
               animation: 'thunder',
+            ),
+          if (_weatherCondition == WeatherCondition.windy)
+            FlareActor(
+              'assets/wind.flr',
+              animation: 'wind',
+            ),
+          if (_weatherCondition == WeatherCondition.foggy)
+            Container(
+              color: Colors.white.withOpacity(0.4),
             ),
         ],
       ),
